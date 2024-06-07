@@ -24,34 +24,29 @@ int main(int argc, char *argv[]) {
   const auto semaphoreId = generateKeyHash(appName, "semaphore");
   const auto sharedMemoryId = generateKeyHash(appName, "sharedMemory");
 
-  QSystemSemaphore semaphore(semaphoreId, 1); // создаём семафор
-  semaphore.acquire(); // Поднимаем семафор, запрещая другим экземплярам
-                       // работать с разделяемой памятью
+  QSystemSemaphore semaphore(semaphoreId, 1);
+  semaphore.acquire(); // another apps cannot work with shared memory
 
 #ifndef Q_OS_WIN32
-  // в linux/unix разделяемая память не освобождается при аварийном завершении
-  // приложения, поэтому необходимо избавиться от данного мусора
+  // in linux/unix shared memory do not frees in case of crash, need to free
+  // garbage
   QSharedMemory nix_fix_shared_memory(sharedMemoryId);
   if (nix_fix_shared_memory.attach()) {
     nix_fix_shared_memory.detach();
   }
 #endif
-  QSharedMemory sharedMemory(
-      sharedMemoryId); // Создаём экземпляр разделяемой памяти
-  bool is_running; // переменную для проверки ууже запущенного приложения
-  if (sharedMemory
-          .attach()) { // пытаемся присоединить экземпляр разделяемой памяти
-    // к уже существующему сегменту
-    is_running =
-        true; // Если успешно, то определяем, что уже есть запущенный экземпляр
-  } else {
-    sharedMemory.create(1); // В противном случае выделяем 1 байт памяти
-    is_running = false; // И определяем, что других экземпляров не запущено
-  }
-  semaphore.release(); // Опускаем семафор
+  QSharedMemory sharedMemory(sharedMemoryId);
 
-  // Если уже запущен один экземпляр приложения, то сообщаем об этом
-  // пользователю и завершаем работу текущего экземпляра приложения
+  bool is_running;
+  if (sharedMemory.attach()) {
+    is_running = true;
+  } else {
+    sharedMemory.create(1);
+    is_running = false;
+  }
+
+  semaphore.release();
+
   if (is_running) {
     QMessageBox msgBox;
     msgBox.setIcon(QMessageBox::Warning);
