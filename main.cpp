@@ -3,26 +3,41 @@
 #include <QSystemSemaphore>
 #include <QSharedMemory>
 #include <QMessageBox>
+#include <QCryptographicHash>
+
+QString generateKeyHash(const QString& key, const QString& salt)
+{
+    QByteArray data;
+
+    data.append(key.toUtf8());
+    data.append(salt.toUtf8());
+    data = QCryptographicHash::hash(data, QCryptographicHash::Sha1).toHex();
+
+    return data;
+}
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+    const QString appName = "effortless";
 
+    const auto semaphoreId = generateKeyHash(appName, "semaphore");
+    const auto sharedMemoryId = generateKeyHash(appName, "sharedMemory");
 
-    QSystemSemaphore semaphore("<uniq id>", 1);  // создаём семафор
+    QSystemSemaphore semaphore(semaphoreId, 1);  // создаём семафор
     semaphore.acquire(); // Поднимаем семафор, запрещая другим экземплярам работать с разделяемой памятью
 
 #ifndef Q_OS_WIN32
     // в linux/unix разделяемая память не освобождается при аварийном завершении приложения,
     // поэтому необходимо избавиться от данного мусора
-    QSharedMemory nix_fix_shared_memory("<uniq id 2>");
+    QSharedMemory nix_fix_shared_memory(sharedMemoryId);
     if (nix_fix_shared_memory.attach())
     {
         nix_fix_shared_memory.detach();
     }
 #endif
 
-    QSharedMemory sharedMemory("<uniq id 2>");  // Создаём экземпляр разделяемой памяти
+    QSharedMemory sharedMemory(sharedMemoryId);  // Создаём экземпляр разделяемой памяти
     bool is_running;            // переменную для проверки ууже запущенного приложения
     if (sharedMemory.attach())
     {                           // пытаемся присоединить экземпляр разделяемой памяти
