@@ -54,15 +54,16 @@ jobs:
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
-    - name: Download and extract Qt
-      run: |
-        wget https://download.qt.io/official_releases/qt/6.7/6.7.1/single/qt-everywhere-src-6.7.1.tar.xz
-        tar -xf qt-everywhere-src-6.7.1.tar.xz
-        cd qt-everywhere-src-6.7.1
-        ./init-repository
-        ./configure -prefix $PWD/qtbase
-        make -j$(nproc)
-        make install
+    - name: (3) Install Qt
+      uses: jurplel/install-qt-action@v2
+      with:
+        version:      ${{ env.QT_VERSION }}
+        host:         ubuntu 
+        target:       desktop
+        # arch:         win64_msvc2019_64
+        dir:          ${{ runner.temp }}
+        # modules:      qtcharts qt3d
+        setup-python: false
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
