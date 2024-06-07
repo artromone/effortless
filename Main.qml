@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Controls
 
 Window {
     id: root
@@ -9,9 +10,55 @@ Window {
 
     Rectangle {
         id: rect
-        width: 200; height: 200
+        width: 200
         color: "white"
         anchors {left: parent.left; top: parent.top; bottom: parent.bottom}
+
+        Label {
+            id: appLogo
+            anchors {left: parent.left; top: parent.top; right: parent.right}
+            width: column.width
+            height: 50
+
+            color: "white"
+            background: Rectangle {color:"gray"; anchors.fill: parent}
+            text: "Account"
+        }
+
+        Column {
+            id: column
+            anchors {left: parent.left; top: appLogo.bottom; right: parent.right;
+            //    bottom: parent.bottom
+            }
+            anchors.topMargin: 16
+            spacing: 8
+
+            Icon {
+                source: "icons/account_black.svg"
+
+                anchors.fill: parent
+                sourceSize.width: button.width
+                sourceSize.height: button.height
+            }
+
+            Label {
+                width: column.width
+                height: 50
+
+                color: "white"
+                background: Rectangle {color:"gray"; anchors.fill: parent}
+                text: "TASKS"
+            }
+
+            Label {
+                width: column.width
+                height: 50
+
+                color: "white"
+                background: Rectangle {color:"gray"; anchors.fill: parent}
+                text: "LABELS"
+            }
+        }
 
         property bool isDragging: false
 
@@ -68,9 +115,12 @@ Window {
                 }
             }
         }
+    }
 
-        Component.onCompleted: {
-            console.log("Component loaded");
-        }
+    Rectangle {
+        id: rect2
+        height: 50
+        color: "blue"
+        anchors {left: rect.right; top: parent.top; right: parent.right}
     }
 }
