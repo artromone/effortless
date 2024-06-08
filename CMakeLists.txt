@@ -8,16 +8,16 @@ find_package(Qt6 6.4 REQUIRED COMPONENTS Quick Widgets)
 
 qt_standard_project_setup()
 
+set(APP_PATH "src/app")
+
 qt_add_executable(appeffortless
-    main.cpp
+    ${APP_PATH}/main.cpp
 )
 
 qt_add_qml_module(appeffortless
     URI effortless
     VERSION 1.0
-    QML_FILES
-        Main.qml
-        QML_FILES Icon.qml
+    QML_FILES ${APP_PATH}/Main.qml ${APP_PATH}/Icon.qml ${APP_PATH}/SidebarLeft.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
