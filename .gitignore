@@ -47,6 +47,7 @@ build/
 
 # Vim temporary files
 .*.swp
+compile_commands.json
 
 # Visual Studio generated files
 *.ib_pdb_index

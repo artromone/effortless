@@ -15,50 +15,52 @@ QString generateKeyHash(const QString &key, const QString &salt) {
 
   return data;
 }
+
+const QString APP_NAME = "effortless";
+const QString SEMAPHORE_ID = generateKeyHash(APP_NAME, "semaphore");
+const QString SHARED_MEMORY_ID = generateKeyHash(APP_NAME, "sharedMemory");
 } // namespace
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
-  const QString appName = "effortless";
 
-  const auto semaphoreId = generateKeyHash(appName, "semaphore");
-  const auto sharedMemoryId = generateKeyHash(appName, "sharedMemory");
-
-  QSystemSemaphore semaphore(semaphoreId, 1);
+  QSystemSemaphore semaphore(SEMAPHORE_ID, 1);
   semaphore.acquire(); // another apps cannot work with shared memory
 
 #ifndef Q_OS_WIN32
-  // in linux/unix shared memory do not frees in case of crash, need to free
-  // garbage
-  QSharedMemory nix_fix_shared_memory(sharedMemoryId);
-  if (nix_fix_shared_memory.attach()) {
+  // in linux/unix shared memory do not frees in case of crash, need to free garbage
+  QSharedMemory nix_fix_shared_memory(SHARED_MEMORY_ID);
+  if (nix_fix_shared_memory.attach())
+  {
     nix_fix_shared_memory.detach();
   }
 #endif
-  QSharedMemory sharedMemory(sharedMemoryId);
+  QSharedMemory sharedMemory(SHARED_MEMORY_ID);
 
   bool is_running;
-  if (sharedMemory.attach()) {
+  if (sharedMemory.attach())
+  {
     is_running = true;
-  } else {
+  }
+  else
+  {
     sharedMemory.create(1);
     is_running = false;
   }
 
   semaphore.release();
 
-  if (is_running) {
+  if (is_running)
+  {
     QMessageBox msgBox;
     msgBox.setIcon(QMessageBox::Warning);
-    msgBox.setText(
-        QObject::tr("Приложение уже запущено.\n"
-                    "Вы можете запустить только один экземпляр приложения."));
+    msgBox.setText(QObject::tr("Another instance of app is already running."));
     msgBox.exec();
     return 1;
   }
 
   QQmlApplicationEngine engine;
-  const QUrl url(QStringLiteral("qrc:/effortless/Main.qml"));
+  const QUrl url(QStringLiteral("qrc:/effortless/src/app/Main.qml"));
   QObject::connect(
       &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
       []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
