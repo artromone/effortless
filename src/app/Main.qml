@@ -13,10 +13,14 @@ Window {
         anchors {left: parent.left; top: parent.top; bottom: parent.bottom}
     }
 
-    Rectangle {
+    Rectangle { // SidebarTop
         id: _
         height: 50
         color: "blue"
         anchors {left: sidebarLeft.right; top: parent.top; right: parent.right}
+    }
+
+    ElementList {
+anchors {left: sidebarLeft.right; top: _.bottom; right: parent.right}
     }
 }

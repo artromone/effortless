@@ -22,6 +22,8 @@ qt_add_qml_module(appeffortless
     QML_FILES ${SIDEBAR_LEFT_QML_DIR}/SidebarLeft.qml
     QML_FILES ${SIDEBAR_LEFT_QML_DIR}/SidebarLeftPanel.qml
     QML_FILES ${SIDEBAR_LEFT_QML_DIR}/Icon.qml
+    QML_FILES src/app/ElementList.qml
+    QML_FILES src/app/DroppableRect.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
