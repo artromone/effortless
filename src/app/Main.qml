@@ -1,4 +1,5 @@
 import QtQuick
+import "sidebar/left" 1.0
 
 Window {
     id: root
@@ -13,7 +14,7 @@ Window {
     }
 
     Rectangle {
-        id: rect2
+        id: _
         height: 50
         color: "blue"
         anchors {left: sidebarLeft.right; top: parent.top; right: parent.right}

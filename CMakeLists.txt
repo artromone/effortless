@@ -4,20 +4,20 @@ project(effortless VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(APP_PATH "src/app")
+set(SIDEBAR_LEFT_QML_DIR "${APP_PATH}/sidebar/left")
+
 find_package(Qt6 6.4 REQUIRED COMPONENTS Quick Widgets)
 
 qt_standard_project_setup()
 
-set(APP_PATH "src/app")
-
-qt_add_executable(appeffortless
-    ${APP_PATH}/main.cpp
-)
+qt_add_executable(appeffortless ${APP_PATH}/main.cpp)
 
 qt_add_qml_module(appeffortless
     URI effortless
     VERSION 1.0
-    QML_FILES ${APP_PATH}/Main.qml ${APP_PATH}/Icon.qml ${APP_PATH}/SidebarLeft.qml
+    QML_FILES ${APP_PATH}/Main.qml
+    QML_FILES ${SIDEBAR_LEFT_QML_DIR}/SidebarLeft.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
