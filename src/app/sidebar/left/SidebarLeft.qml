@@ -1,20 +1,21 @@
 import QtQuick
-import QtQuick.Controls
 
 Rectangle {
     id: sidebarLeft
     width: 200
     color: "white"
 
-    Label {
+    SidebarLeftPanel {
         id: accountLabel
-        anchors {left: parent.left; top: parent.top; right: parent.right}
+
+        anchors {left: parent.left; top: parent.top}
+
         width: column.width
         height: 50
 
+        iconName: "account_black"
         color: "white"
-        background: Rectangle {color:"gray"; anchors.fill: parent}
-        text: "Account"
+        text: "Account.ksdshfgjsfhgjfdshg"
     }
 
     Column {
@@ -23,29 +24,21 @@ Rectangle {
         anchors.topMargin: 16
         spacing: 8
 
-        // Icon {
-        //     source: "icons/account_black.svg"
-
-        //     anchors.fill: parent
-        //     sourceSize.width: button.width
-        //     sourceSize.height: button.height
-        // }
-
-        Label {
+        SidebarLeftPanel {
             width: column.width
             height: 50
 
+            iconName: "tasks_black"
             color: "white"
-            background: Rectangle {color:"gray"; anchors.fill: parent}
             text: "TASKS"
         }
 
-        Label {
+        SidebarLeftPanel {
             width: column.width
             height: 50
 
+            iconName: "label_black"
             color: "white"
-            background: Rectangle {color:"gray"; anchors.fill: parent}
             text: "LABELS"
         }
     }
