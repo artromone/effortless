@@ -3,8 +3,10 @@ import QtQuick.Controls
 
 Item {
     property alias text: label.text
-    property alias color: label.color
     property string iconName: icon.name
+
+    width: column.width
+    height: 50
 
     Icon {
         id: icon
@@ -18,6 +20,8 @@ Item {
     Label {
         id: label
 
+        visible: sidebarLeft.width > 75
+
         verticalAlignment: Text.AlignVCenter
         anchors {left: icon.right; right: parent.right}
         height: parent.height
@@ -25,9 +29,6 @@ Item {
         font.pixelSize: 20
         elide: Text.ElideRight
 
-        background: Rectangle {
-            color: "gray"
-            anchors.fill: parent
-        }
+        color: "black"
     }
 }

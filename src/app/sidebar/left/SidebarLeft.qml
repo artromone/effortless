@@ -7,29 +7,23 @@ Rectangle {
 
     SidebarLeftPanel {
         id: accountLabel
-
         anchors {left: parent.left; top: parent.top}
 
-        width: column.width
-        height: 50
-
         iconName: "account_black"
-        color: "white"
-        text: "Account.ksdshfgjsfhgjfdshg"
+        text: "ACCOUNT"
     }
 
     Column {
         id: column
         anchors {left: parent.left; top: accountLabel.bottom; right: parent.right}
-        anchors.topMargin: 16
-        spacing: 8
+        anchors.topMargin: 25
+        spacing: 10
 
         SidebarLeftPanel {
             width: column.width
             height: 50
 
             iconName: "tasks_black"
-            color: "white"
             text: "TASKS"
         }
 
@@ -38,7 +32,6 @@ Rectangle {
             height: 50
 
             iconName: "label_black"
-            color: "white"
             text: "LABELS"
         }
     }
@@ -86,9 +79,9 @@ Rectangle {
                 var deltaX = mouseX - mouseXPrev;
 
                 var newWidth = sidebarLeft.width + deltaX;
-                if (newWidth < 75)
+                if (newWidth < 55)
                 {
-                    newWidth = 75;
+                    newWidth = 55;
                 }
                 else if (newWidth > root.width / 4)
                 {
